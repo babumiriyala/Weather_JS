@@ -43,10 +43,20 @@
     </header>
 
 
-		<nav>
+		<!-- <nav>
 			<input type="text" value="" maxlength="20" id="zip">
 			<button onclick="loadWeather()">Submit</button>
-		</nav>
+		</nav> -->
+
+
+<select id="zip" onchange="loadWeather()">
+  <option value="HYDERABAD">Hyderabad</option>
+  <option value="PUNE">Pune</option>
+  <option value="WARANGAL">Warangal</option>
+  <option value="VIJAYAWADA">Vijayawada</option>
+</select>
+<!-- <input type="submit" onclick="loadWeather()"> -->
+
 
 <!-- page content here -->
 <main>
