@@ -124,6 +124,12 @@ main {
     text-align: center;
     font-size: .8rem;
     font-weight: 400; }
+    main #uv {
+      margin-top: .5rem;
+      text-align: center;
+      font-size: .8rem;
+      color: #c0392b;
+      font-weight: 400; }
   main #temperature {
     margin-top: .75rem;
     text-align: center;

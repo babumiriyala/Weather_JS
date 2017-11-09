@@ -9,7 +9,7 @@ var fObj;
 function loadWeather() {
 
   var zip = document.getElementById("zip").value;
-  if (zip === '') {zip = "84653"}
+  if (zip === '') {zip = "HYDERABAD, INDIA"}
   var conditionsPath = "http://api.wunderground.com/api/ca6c87d275e05935/conditions/q/"+zip+".json";
   var forecastPath = "http://api.wunderground.com/api/ca6c87d275e05935/forecast/q/"+zip+".json";
   // GET THE CONDITIONS
@@ -30,7 +30,11 @@ weatherConditions.onload = function() {
         console.log(cObj);
         document.getElementById('location').innerHTML = cObj.current_observation.display_location.full;
         document.getElementById('weather').innerHTML = cObj.current_observation.weather;
-        document.getElementById('temperature').innerHTML = cObj.current_observation.temp_c;
+        document.getElementById('temperature').innerHTML = cObj.current_observation.temp_c+"°";
+        var ultra = cObj.current_observation.UV;
+        document.getElementById('uv').innerHTML = "Current UV = " + ultra;
+
+
     } //end if
 }; //end function
 
