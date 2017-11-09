@@ -11,7 +11,7 @@ function loadWeather() {
   var zip = document.getElementById("zip").value;
   if (zip === '') {zip = "HYDERABAD"}
   var conditionsPath = "http://api.wunderground.com/api/ca6c87d275e05935/conditions/q/"+zip+",INDIA.json";
-  var forecastPath = "http://api.wunderground.com/api/ca6c87d275e05935/forecast/q/"+zip+".json";
+  var forecastPath = "http://api.wunderground.com/api/ca6c87d275e05935/forecast/q/"+zip+",INDIA.json";
   // GET THE CONDITIONS
   weatherConditions.open('GET', conditionsPath, true);
   weatherConditions.responseType = 'text';
