@@ -1,45 +1,51 @@
-/*jslint browser:true */
-'use strict';
-
-var weatherConditions = new XMLHttpRequest();
-var weatherForecast = new XMLHttpRequest();
 var cObj;
-var fObj;
+var city = [
+  'PUNE',
+  'WARANGAL',
+  'Delhi',
+  'HYDERABAD',
+  'SIDDIPET',
+  'VIJAYAWADA',
+  'KURNOOL',
+  'GUNTUR',
+  'KOLKATA'
 
-// GET THE CONDITIONS
-weatherConditions.open('GET', 'http://api.wunderground.com/api/ca6c87d275e05935/conditions/q/17.457,78.533.json', true);
-weatherConditions.responseType = 'text';
-weatherConditions.send(null);
+];
 
-weatherConditions.onload = function() {
-    if (weatherConditions.status === 200){
-        cObj = JSON.parse(weatherConditions.responseText);
-        console.log(cObj);
-        document.getElementById('location').innerHTML = cObj.current_observation.display_location.full;
-        document.getElementById('temperature').innerHTML = cObj.current_observation.temp_c;
+for (var i = 0; i < city.length; i++) {
+  loadWeather(city[i]);
+}
 
-
-    } //end if
-}; //end function
-
-
-
-
-
+function loadWeather(x) {
+  var weatherConditions = new XMLHttpRequest();
+  var conditionsPath = "http://api.wunderground.com/api/ca6c87d275e05935/conditions/q/" + x + ",INDIA.json";
 
 
+  // GET THE CONDITIONS
+  weatherConditions.open('GET', conditionsPath, true);
+  weatherConditions.responseType = 'text';
+  weatherConditions.send(null);
+
+  weatherConditions.onload = function() {
+    if (weatherConditions.status == 200) {
+      cObj = JSON.parse(weatherConditions.responseText);
+      console.log(cObj);
+      var objDate = new Date(cObj.current_observation.observation_time_rfc822),
+        locale = "en-us",
+        month = objDate.toLocaleString(locale, { month: "long" });
+        hours = objDate.toLocaleString(locale, { hour: "2-digit" });
+        minutes = objDate.toLocaleString(locale, { minute: "numeric" });
+
+      var row = "<tr><td>" + cObj.current_observation.display_location.city + "</td><td>" + cObj.current_observation.UV + "</td><td>" + cObj.current_observation.temp_c +"°" + "</td><td>" + objDate.getHours() +":"+minutes+ "</td></tr>";
+      $('#ajaxRows').append(row);
 
 
 
-// GET THE FORECARST
-weatherForecast.open('GET', 'http://api.wunderground.com/api/ca6c87d275e05935/forecast/q/17.457,78.533.json', true);
-weatherForecast.responseType = 'text';
-weatherForecast.send();
+        document.getElementById('CurrentTime').innerHTML =  objDate.getDate()+ " " + month +" " + objDate.getFullYear();
+        //console.log(month);
 
-weatherForecast.onload = function() {
-if (weatherForecast.status === 200){
-	fObj = JSON.parse(weatherForecast.responseText);
-	console.log(fObj);
-
-} //end if
-}; //end function
+    // or if you want the shorter date: (also possible to use "narrow" for "O"
+    //console.log(objDate.toLocaleString(locale, { month: "short" }));
+        }
+      };
+};
