@@ -1,70 +1,51 @@
-/*jslint browser:true */
-'use strict';
-
-var weatherConditions = new XMLHttpRequest();
-var weatherForecast = new XMLHttpRequest();
 var cObj;
-var fObj;
+var city = [
+  'PUNE',
+  'WARANGAL',
+  'Delhi',
+  'HYDERABAD',
+  'SIDDIPET',
+  'VIJAYAWADA',
+  'KURNOOL',
+  'GUNTUR',
+  'KOLKATA'
 
-function loadWeather() {
+];
 
-  var zip = document.getElementById("zip").value;
-  if (zip === '') {zip = "HYDERABAD"}
-  var conditionsPath = "http://api.wunderground.com/api/ca6c87d275e05935/conditions/q/"+zip+",INDIA.json";
-  var forecastPath = "http://api.wunderground.com/api/ca6c87d275e05935/forecast/q/"+zip+",INDIA.json";
+for (var i = 0; i < city.length; i++) {
+  loadWeather(city[i]);
+}
+
+function loadWeather(x) {
+  var weatherConditions = new XMLHttpRequest();
+  var conditionsPath = "http://api.wunderground.com/api/ca6c87d275e05935/conditions/q/" + x + ",INDIA.json";
+
+
   // GET THE CONDITIONS
   weatherConditions.open('GET', conditionsPath, true);
   weatherConditions.responseType = 'text';
   weatherConditions.send(null);
 
-  // GET THE FORECARST
-  weatherForecast.open('GET', forecastPath, true);
-  weatherForecast.responseType = 'text';
-  weatherForecast.send();
-}
+  weatherConditions.onload = function() {
+    if (weatherConditions.status == 200) {
+      cObj = JSON.parse(weatherConditions.responseText);
+      console.log(cObj);
+      var objDate = new Date(cObj.current_observation.observation_time_rfc822),
+        locale = "en-us",
+        month = objDate.toLocaleString(locale, { month: "long" });
+        hours = objDate.toLocaleString(locale, { hour: "2-digit" });
+        minutes = objDate.toLocaleString(locale, { minute: "numeric" });
+
+      var row = "<tr><td>" + cObj.current_observation.display_location.city + "</td><td>" + cObj.current_observation.UV + "</td><td>" + cObj.current_observation.temp_c +"°" + "</td><td>" + objDate.getHours() +":"+minutes+ "</td></tr>";
+      $('#ajaxRows').append(row);
 
 
-weatherConditions.onload = function() {
-    if (weatherConditions.status === 200){
-        cObj = JSON.parse(weatherConditions.responseText);
-        console.log(cObj);
-        document.getElementById('location').innerHTML = cObj.current_observation.display_location.full;
-        document.getElementById('weather').innerHTML = cObj.current_observation.weather;
-        document.getElementById('temperature').innerHTML = cObj.current_observation.temp_c+"°";
-        var ultra = cObj.current_observation.UV;
-        document.getElementById('uv').innerHTML = "Current UV = " + ultra;
 
+        document.getElementById('CurrentTime').innerHTML =  objDate.getDate()+ " " + month +" " + objDate.getFullYear();
+        //console.log(month);
 
-    } //end if
-}; //end function
-
-weatherForecast.onload = function() {
-    if (weatherForecast.status === 200){
-	      fObj = JSON.parse(weatherForecast.responseText);
-	      console.log(fObj);
-        document.getElementById('desc').innerHTML = fObj.forecast.txt_forecast.forecastday[0].fcttext;
-
-        //Day  1
-        document.getElementById('r1c1').innerHTML = fObj.forecast.simpleforecast.forecastday[1].date.weekday;
-        document.getElementById('r1c3').innerHTML = fObj.forecast.simpleforecast.forecastday[1].high.celsius+"°";
-        document.getElementById('r1c4').innerHTML = fObj.forecast.simpleforecast.forecastday[1].low.celsius+"°";
-        var imagePath = fObj.forecast.simpleforecast.forecastday[1].icon_url;
-        document.getElementById('r1c2').src = imagePath;
-
-        //Day  2
-        document.getElementById('r2c1').innerHTML = fObj.forecast.simpleforecast.forecastday[2].date.weekday;
-        document.getElementById('r2c3').innerHTML = fObj.forecast.simpleforecast.forecastday[2].high.celsius+"°";
-        document.getElementById('r2c4').innerHTML = fObj.forecast.simpleforecast.forecastday[2].low.celsius+"°";
-        var imagePath = fObj.forecast.simpleforecast.forecastday[2].icon_url;
-        document.getElementById('r2c2').src = imagePath;
-
-        //Day  3
-        document.getElementById('r3c1').innerHTML = fObj.forecast.simpleforecast.forecastday[3].date.weekday;
-        document.getElementById('r3c3').innerHTML = fObj.forecast.simpleforecast.forecastday[3].high.celsius+"°";
-        document.getElementById('r3c4').innerHTML = fObj.forecast.simpleforecast.forecastday[3].low.celsius+"°";
-        var imagePath = fObj.forecast.simpleforecast.forecastday[3].icon_url;
-        document.getElementById('r3c2').src = imagePath;
-
-      } //end if
-      }; //end function
-loadWeather();
+    // or if you want the shorter date: (also possible to use "narrow" for "O"
+    //console.log(objDate.toLocaleString(locale, { month: "short" }));
+        }
+      };
+};
