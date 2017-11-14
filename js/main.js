@@ -8,7 +8,8 @@ var city = [
   'VIJAYAWADA',
   'KURNOOL',
   'GUNTUR',
-  'KOLKATA'
+  'KOLKATA',
+  'MUMBAI'
 
 ];
 
