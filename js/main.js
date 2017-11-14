@@ -1,15 +1,34 @@
 var cObj;
 var city = [
-  'PUNE',
-  'WARANGAL',
-  'Delhi',
-  'HYDERABAD',
-  'SIDDIPET',
-  'VIJAYAWADA',
-  'KURNOOL',
-  'GUNTUR',
-  'KOLKATA',
-  'KERALA'
+  'Hyderabad',
+  'Itanagar',
+  'Dispur',
+  'Patna',
+  'Raipur',
+  'Panaji',
+  'Gandhinagar',
+  'Chandigarh',
+  'Shimla',
+  'Srinagar',
+  'Jammu',
+  'Ranchi',
+  'Bangalore',
+  'Thiruvananthapuram',
+  'Bhopal',
+  'Mumbai',
+  'Imphal',
+  'Shillong',
+  'Aizwal',
+  'Kohima',
+  'Bhubaneshwar',
+  'Jaipur',
+  'Gangtok',
+  'Chennai',
+  'Agartala',
+  'Dehradun',
+  'Luknow',
+  'Kolkata'
+
 
 ];
 
@@ -22,6 +41,7 @@ function loadWeather(x) {
   var conditionsPath = "http://api.wunderground.com/api/ca6c87d275e05935/conditions/q/" + x + ",INDIA.json";
 
 
+
   // GET THE CONDITIONS
   weatherConditions.open('GET', conditionsPath, true);
   weatherConditions.responseType = 'text';
@@ -30,8 +50,8 @@ function loadWeather(x) {
   weatherConditions.onload = function() {
     if (weatherConditions.status == 200) {
       cObj = JSON.parse(weatherConditions.responseText);
-      console.log(cObj);
-      var objDate = new Date(cObj.current_observation.observation_time_rfc822),
+    
+        var objDate = new Date(cObj.current_observation.observation_time_rfc822),
         locale = "en-us",
         month = objDate.toLocaleString(locale, { month: "long" });
         hours = objDate.toLocaleString(locale, { hour: "2-digit" });
